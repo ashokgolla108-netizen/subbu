@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subbu Family Album 🌸</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,#ffdee9,#b5fffc);
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* Dark overlay */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.25);
+  z-index:0;
+}
+
+/* Photo frame */
+#photoFrame{
+  position:relative;
+  z-index:2;
+  width:85%;
+  max-width:360px;
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:
+    0 0 25px rgba(255,255,255,.4),
+    0 25px 60px rgba(0,0,0,.45);
+}
+
+#photoFrame img{
+  width:100%;
+  display:block;
+  animation:fadeZoom 10s infinite;
+}
+
+/* Photo animation */
+@keyframes fadeZoom{
+  0%{opacity:0;transform:scale(1.08);}
+  15%{opacity:1;transform:scale(1);}
+  85%{opacity:1;}
+  100%{opacity:0;transform:scale(1.12);}
+}
+
+/* Flower styles */
+.flower{
+  position:fixed;
+  top:-40px;
+  font-size:28px;
+  animation:fall linear forwards;
+  z-index:1;
+}
+
+@keyframes fall{
+  from{transform:translateY(0) rotate(0deg);opacity:1;}
+  to{transform:translateY(120vh) rotate(360deg);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="photoFrame">
+  <img id="photo" src="s1.jpg">
+</div>
+
+<audio id="song" src="song.mp3" loop></audio>
+
+<script>
+const photos=[
+ "s1.jpg","s2.jpg","s3.jpg","s4.jpg","s5.jpg",
+ "s6.jpg","s7.jpg","s8.jpg","s9.jpg"
+];
+
+let index=0;
+const img=document.getElementById("photo");
+const song=document.getElementById("song");
+
+/* Play song on first click */
+document.body.addEventListener("click",()=>{
+  song.play();
+},{once:true});
+
+/* Photo slideshow */
+setInterval(()=>{
+  index=(index+1)%photos.length;
+  img.src=photos[index];
+},10000);
+
+/* Massive flower burst on load */
+function flowerBurst(count){
+  for(let i=0;i<count;i++){
+    createFlower(true);
+  }
+}
+
+/* Continuous flower rain */
+function createFlower(burst=false){
+  const f=document.createElement("div");
+  f.className="flower";
+  const flowers=["🌸","🌼","🌺","🌷","💐","🌹"];
+  f.innerText=flowers[Math.floor(Math.random()*flowers.length)];
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=(burst?3:5+Math.random()*4)+"s";
+  f.style.fontSize=(22+Math.random()*18)+"px";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),9000);
+}
+
+/* Initial burst */
+flowerBurst(40);
+
+/* Continuous rain */
+setInterval(()=>createFlower(false),300);
+</script>
+
+</body>
+</html>
